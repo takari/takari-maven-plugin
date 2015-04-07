@@ -46,6 +46,7 @@ public class WrapperMojo extends AbstractMojo {
       downloader.download(new URI(wrapperUrl), destination);     
       UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
       unarchiver.unarchive(destination, new File(session.getExecutionRootDirectory()));
+      getLog().info("The Maven Wrapper has been successfully setup for your project.");
     } catch (Exception e) {
       throw new MojoExecutionException("Error fetching maven-wrapper archive.", e);
     }
