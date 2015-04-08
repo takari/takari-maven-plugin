@@ -1,9 +1,10 @@
 # Takari Maven Plugin
 
-## Install the Maven wrapper for your project
+## Install the Maven Wrapper in your Maven Project
 
 ```
-mvn io.takari:maven:0.2.1:warpper
+cd yourmavenproject
+mvn io.takari:maven:0.2.1:wrapper
 ```
 
 This will create a mvnw and a mvnw.bat file as well as a .mvn folder in your project.
