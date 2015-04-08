@@ -19,9 +19,9 @@ import org.apache.maven.wrapper.Downloader;
 import io.tesla.proviso.archive.UnArchiver;
 
 /**
- * @author Jason van Zyl
+ * @author Jason van Zyl 
  */
-@Mojo(name = "wrapper", aggregator = true)
+@Mojo(name = "wrapper", requiresProject = false, aggregator = true)
 public class WrapperMojo extends AbstractMojo {
 
   @Parameter(defaultValue = "${session}", readonly = true)
@@ -46,7 +46,11 @@ public class WrapperMojo extends AbstractMojo {
       downloader.download(new URI(wrapperUrl), destination);     
       UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
       unarchiver.unarchive(destination, new File(session.getExecutionRootDirectory()));
+      getLog().info("");
+      getLog().info("");
       getLog().info("The Maven Wrapper has been successfully setup for your project.");
+      getLog().info("");
+      getLog().info("");
     } catch (Exception e) {
       throw new MojoExecutionException("Error fetching maven-wrapper archive.", e);
     }
