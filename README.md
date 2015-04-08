@@ -4,7 +4,7 @@
 
 ```
 cd yourmavenproject
-mvn io.takari:maven:0.2.1:wrapper
+mvn -N io.takari:maven:0.2.1:wrapper
 ```
 
 This will create a mvnw and a mvnw.bat file as well as a .mvn folder in your project.
