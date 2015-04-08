@@ -21,7 +21,7 @@ import io.tesla.proviso.archive.UnArchiver;
 /**
  * @author Jason van Zyl
  */
-@Mojo(name = "wrapper", requiresProject = true, aggregator = true)
+@Mojo(name = "wrapper", aggregator = true)
 public class WrapperMojo extends AbstractMojo {
 
   @Parameter(defaultValue = "${session}", readonly = true)
