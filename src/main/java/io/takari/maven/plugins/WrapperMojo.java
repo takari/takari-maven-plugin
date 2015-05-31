@@ -5,7 +5,12 @@
 package io.takari.maven.plugins;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
@@ -19,7 +24,7 @@ import org.apache.maven.wrapper.Downloader;
 import io.tesla.proviso.archive.UnArchiver;
 
 /**
- * @author Jason van Zyl 
+ * @author Jason van Zyl
  */
 @Mojo(name = "wrapper", requiresProject = false, aggregator = true)
 public class WrapperMojo extends AbstractMojo {
@@ -30,6 +35,12 @@ public class WrapperMojo extends AbstractMojo {
   @Parameter(defaultValue = "0.1.2", property = "version")
   private String version;
   
+  @Parameter(defaultValue = "3.3.3", property = "maven")
+  private String maven;
+
+  @Parameter(property = "distributionUrl")
+  private String distributionUrl;
+
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     //
@@ -39,20 +50,42 @@ public class WrapperMojo extends AbstractMojo {
     //
     File localRepository = new File(System.getProperty("user.home"), ".m2/repository");
     String artifactPath = String.format("io/takari/maven-wrapper/%s/maven-wrapper-%s.tar.gz", version, version);
-    String wrapperUrl = String.format("http://repo1.maven.org/maven2/%s", artifactPath);    
+    String wrapperUrl = String.format("http://repo1.maven.org/maven2/%s", artifactPath);
     File destination = new File(localRepository, artifactPath);
     Downloader downloader = new DefaultDownloader("mvnw", version);
     try {
-      downloader.download(new URI(wrapperUrl), destination);     
+      downloader.download(new URI(wrapperUrl), destination);
       UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
-      unarchiver.unarchive(destination, new File(session.getExecutionRootDirectory()));
-      getLog().info("");
+      Path rootDirectory = Paths.get(session.getExecutionRootDirectory());
+      unarchiver.unarchive(destination, rootDirectory.toFile());
+      overwriteDistributionUrl(rootDirectory, getDistributionUrl());
       getLog().info("");
       getLog().info("The Maven Wrapper has been successfully setup for your project.");
       getLog().info("");
-      getLog().info("");
     } catch (Exception e) {
-      throw new MojoExecutionException("Error fetching maven-wrapper archive.", e);
+      throw new MojoExecutionException("Error installing the maven-wrapper archive.", e);
     }
   }
+
+  private void overwriteDistributionUrl(Path rootDirectory, String distributionUrl) throws IOException {
+	if (!isNullOrEmpty(distributionUrl)) {
+		Path wrapperProperties = rootDirectory.resolve(Paths.get(".mvn", "wrapper", "maven-wrapper.properties"));
+		if (Files.isWritable(wrapperProperties)) {
+			String distroKeyValue = "distributionUrl="+distributionUrl;
+			Files.write(wrapperProperties, distroKeyValue.getBytes(Charset.forName("UTF-8")));
+		}
+	}
+  }
+
+  protected String getDistributionUrl() {
+    if (isNullOrEmpty(distributionUrl) && !isNullOrEmpty(maven)) {
+      distributionUrl = String.format("https://repo1.maven.org/maven2/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", maven, maven);
+    }
+    return distributionUrl;
+  }
+
+  private static boolean isNullOrEmpty(String value) {
+    return value == null || value.isEmpty();
+  }
+
 }
