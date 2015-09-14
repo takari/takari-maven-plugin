@@ -34,7 +34,7 @@ public class WrapperMojo extends AbstractMojo {
 
   @Parameter(defaultValue = "0.1.2", property = "version")
   private String version;
-  
+
   @Parameter(defaultValue = "3.3.3", property = "maven")
   private String maven;
 
@@ -68,13 +68,13 @@ public class WrapperMojo extends AbstractMojo {
   }
 
   private void overwriteDistributionUrl(Path rootDirectory, String distributionUrl) throws IOException {
-	if (!isNullOrEmpty(distributionUrl)) {
-		Path wrapperProperties = rootDirectory.resolve(Paths.get(".mvn", "wrapper", "maven-wrapper.properties"));
-		if (Files.isWritable(wrapperProperties)) {
-			String distroKeyValue = "distributionUrl="+distributionUrl;
-			Files.write(wrapperProperties, distroKeyValue.getBytes(Charset.forName("UTF-8")));
-		}
-	}
+    if (!isNullOrEmpty(distributionUrl)) {
+      Path wrapperProperties = rootDirectory.resolve(Paths.get(".mvn", "wrapper", "maven-wrapper.properties"));
+      if (Files.isWritable(wrapperProperties)) {
+        String distroKeyValue = "distributionUrl=" + distributionUrl;
+        Files.write(wrapperProperties, distroKeyValue.getBytes(Charset.forName("UTF-8")));
+      }
+    }
   }
 
   protected String getDistributionUrl() {
