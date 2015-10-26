@@ -51,6 +51,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>io.takari.graph</groupId>
+      <artifactId>takari-graph</artifactId>
+      <version>0.0.2</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>${mavenVersion}</version>
