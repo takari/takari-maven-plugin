@@ -14,7 +14,7 @@
   </parent>
 
   <artifactId>maven</artifactId>
-  <version>0.3.3</version>
+  <version>0.3.4-SNAPSHOT</version>
   <packaging>takari-maven-plugin</packaging>
 
   <description>
@@ -79,8 +79,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <tag>maven-0.3.3</tag>
-  </scm>
 </project>
