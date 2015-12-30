@@ -4,21 +4,21 @@
 
 ```
 cd yourmavenproject
-mvn -N io.takari:maven:0.3.0:wrapper
+mvn -N io.takari:maven:wrapper
 ```
 
 You can set a specific Maven release (but not SNAPSHOT) by adding a `maven` parameter :
 
 ```
 cd yourmavenproject
-mvn -N io.takari:maven:0.3.0:wrapper -Dmaven=3.3.3
+mvn -N io.takari:maven:wrapper -Dmaven=3.3.3
 ```
 
 Alternatively, you can set a specific download url (which could point to a SNAPSHOT version of Maven) by using the `distributionUrl` parameter :
 
 ```
 cd yourmavenproject
-mvn -N io.takari:maven:0.3.0:wrapper -DdistributionUrl=http://server/path/to/maven/distro.zip
+mvn -N io.takari:maven:wrapper -DdistributionUrl=http://server/path/to/maven/distro.zip
 ```
 
 
