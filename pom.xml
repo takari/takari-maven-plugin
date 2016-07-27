@@ -20,7 +20,7 @@
     <dependency>
       <groupId>io.takari</groupId>
       <artifactId>maven-wrapper</artifactId>
-      <version>0.1.5-SNAPSHOT</version>
+      <version>0.1.5</version>
     </dependency>
     <dependency>
       <groupId>io.takari</groupId>
