@@ -1,37 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2014 Takari, Inc. All rights reserved. This program and 
-  the accompanying materials are made available under the terms of the Eclipse 
-  Public License v1.0 which accompanies this distribution, and is available 
-  at http://www.eclipse.org/legal/epl-v10.html -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>io.takari</groupId>
     <artifactId>takari</artifactId>
-    <version>16</version>
+    <version>19</version>
   </parent>
-
   <artifactId>maven</artifactId>
   <version>0.3.4-SNAPSHOT</version>
   <packaging>takari-maven-plugin</packaging>
-
-  <description>
-    This plugin provides some utilities to improve your Maven builds.
-  </description>
-
+  <name>maven</name>
+  <description>This plugin provides some utilities to improve your Maven builds.</description>
   <properties>
-    <mavenVersion>3.2.5</mavenVersion>
     <mavenPluginPluginVersion>3.3</mavenPluginPluginVersion>
+    <mavenVersion>3.2.5</mavenVersion>
   </properties>
-
   <dependencies>
-    <!-- We're using the download tool but we can probably make something better -->
     <dependency>
       <groupId>io.takari</groupId>
       <artifactId>maven-wrapper</artifactId>
-      <version>0.1.4</version>
+      <version>0.1.5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.takari</groupId>
@@ -65,18 +54,7 @@
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
       <version>${mavenPluginPluginVersion}</version>
-      <scope>compile</scope> <!-- this is required by MojoDescriptorGleaner at runtime -->
+      <scope>compile</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>io.takari.maven.plugins</groupId>
-        <artifactId>takari-lifecycle-plugin</artifactId>
-        <version>1.11.3</version>
-        <extensions>true</extensions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
