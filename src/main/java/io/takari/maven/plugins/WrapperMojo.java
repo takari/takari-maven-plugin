@@ -32,7 +32,7 @@ public class WrapperMojo extends AbstractMojo {
   @Parameter(defaultValue = "${session}", readonly = true)
   private MavenSession session;
 
-  @Parameter(defaultValue = "0.1.5", property = "version")
+  @Parameter(defaultValue = "0.2.0-SNAPSHOT", property = "version")
   private String version;
 
   @Parameter(defaultValue = "3.3.9", property = "maven")
@@ -60,7 +60,8 @@ public class WrapperMojo extends AbstractMojo {
       unarchiver.unarchive(destination, rootDirectory.toFile());
       overwriteDistributionUrl(rootDirectory, getDistributionUrl());
       getLog().info("");
-      getLog().info("The Maven Wrapper has been successfully setup for your project.");
+      getLog().info("The Maven Wrapper version " + version + " has been successfully setup for your project.");
+      getLog().info("Using Apache Maven " + maven);
       getLog().info("");
     } catch (Exception e) {
       throw new MojoExecutionException("Error installing the maven-wrapper archive.", e);
