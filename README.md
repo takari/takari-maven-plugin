@@ -11,7 +11,7 @@ You can set a specific Maven release (but not SNAPSHOT) by adding a `maven` para
 
 ```
 cd yourmavenproject
-mvn -N io.takari:maven:wrapper -Dmaven=3.3.3
+mvn -N io.takari:maven:wrapper -Dmaven=3.3.9
 ```
 
 Alternatively, you can set a specific download url (which could point to a SNAPSHOT version of Maven) by using the `distributionUrl` parameter :
