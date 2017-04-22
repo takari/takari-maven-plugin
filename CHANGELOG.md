@@ -3,7 +3,8 @@
 The [git commit history](https://github.com/takari/takari-maven-plugin/commits/master) is the detailed source of all
 changes. The following provides most information at an easier glance.
 
-In addition the maven-wrapper changelog contains useful information related to the wrapper goal of this plugin.
+In addition the [maven-wrapper changelog](https://github.com/takari/maven-wrapper/blob/master/CHANGELOG.md) contains
+useful information related to the wrapper goal of this plugin.
 
 ## Version 0.4.1 - 2017-04-21
 
@@ -17,4 +18,8 @@ Release performed by Manfred Moser - http://www.simpligility.com
 - Upgrade to maven-wrapper:0.2.0
 
 Release performed by Manfred Moser - http://www.simpligility.com
+
+## Earlier versions
+
+See commit history and Central Repository.
 
