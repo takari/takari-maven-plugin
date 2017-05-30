@@ -50,7 +50,7 @@ public class WrapperMojo extends AbstractMojo {
     //
     File localRepository = new File(System.getProperty("user.home"), ".m2/repository");
     String artifactPath = String.format("io/takari/maven-wrapper/%s/maven-wrapper-%s.tar.gz", version, version);
-    String wrapperUrl = String.format("http://repo1.maven.org/maven2/%s", artifactPath);
+    String wrapperUrl = String.format("https://repo1.maven.org/maven2/%s", artifactPath);
     File destination = new File(localRepository, artifactPath);
     Downloader downloader = new DefaultDownloader("mvnw", version);
     try {
