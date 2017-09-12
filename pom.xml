@@ -7,7 +7,7 @@
     <version>25</version>
   </parent>
   <artifactId>maven</artifactId>
-  <version>0.4.2</version>
+  <version>0.4.3-SNAPSHOT</version>
   <packaging>takari-maven-plugin</packaging>
   <name>maven</name>
   <description>This plugin provides some utilities to improve your Maven builds.</description>
@@ -57,8 +57,4 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
-
-  <scm>
-    <tag>maven-0.4.2</tag>
-  </scm>
 </project>
