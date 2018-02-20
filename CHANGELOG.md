@@ -9,7 +9,7 @@ useful information related to the wrapper goal of this plugin.
 ## Version 0.5.0 - Upcoming
 
 - Upgrade default Maven version to 3.5.2
-- Upgrade to maven-wrapper:0.3.0
+- Upgrade to maven-wrapper:0.4.0
 
 
 ## Version 0.4.2 - 2017-09-12
