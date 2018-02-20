@@ -35,4 +35,11 @@ Typically, use the scripts and binaries as updated and only adjust config files,
 
 ## More Information
 
-More details about the Maven Wrapper can be found at <a href="https://github.com/takari/maven-wrapper">https://github.com/takari/maven-wrapper</a>
+More details about the Maven Wrapper including
+
+- URL config changes
+- verbose mode
+- no binary usage mode
+
+can be found with the
+[maven-wrapper project](https://github.com/takari/maven-wrapper).
