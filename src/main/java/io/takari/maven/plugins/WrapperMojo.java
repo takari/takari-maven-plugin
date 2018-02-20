@@ -80,7 +80,7 @@ public class WrapperMojo extends AbstractMojo {
 
   protected String getDistributionUrl() {
     if (isNullOrEmpty(distributionUrl) && !isNullOrEmpty(maven)) {
-      distributionUrl = String.format("https://repo1.maven.org/maven2/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", maven, maven);
+      distributionUrl = String.format("https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", maven, maven);
     }
     return distributionUrl;
   }
