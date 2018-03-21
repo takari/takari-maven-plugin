@@ -35,7 +35,7 @@ public class WrapperMojo extends AbstractMojo {
   @Parameter(defaultValue = "0.4.0", property = "version")
   private String version;
 
-  @Parameter(defaultValue = "3.5.2", property = "maven")
+  @Parameter(defaultValue = "3.5.3", property = "maven")
   private String maven;
 
   @Parameter(property = "distributionUrl")
