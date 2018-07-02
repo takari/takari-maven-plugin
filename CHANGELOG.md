@@ -9,10 +9,12 @@ useful information related to the wrapper goal of this plugin.
 ## Version 0.6.1 - 2018-07-02
 
 - Upgrade to maven-wrapper:0.4.1
+- and therefore Maven 3.5.4
 
 ## Version 0.6.0 - 2018-02-20
 
 - Upgrade to maven-wrapper:0.4.0
+- and therefore Maven 3.5.2
 
 ## Version 0.5.0 - 2017-10-26
 
