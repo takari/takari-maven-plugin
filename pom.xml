@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.takari</groupId>
     <artifactId>takari</artifactId>
-    <version>25</version>
+    <version>27</version>
   </parent>
   <artifactId>maven</artifactId>
   <version>0.6.1-SNAPSHOT</version>
@@ -20,7 +20,7 @@
       <groupId>io.takari</groupId>
       <artifactId>maven-wrapper</artifactId>
      <!--  also update version property default value in WrapperMojo -->
-      <version>0.4.0</version>
+      <version>0.4.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.takari</groupId>
