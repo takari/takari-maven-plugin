@@ -18,6 +18,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.settings.Mirror;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.wrapper.DefaultDownloader;
 import org.apache.maven.wrapper.Downloader;
@@ -54,7 +55,8 @@ public class WrapperMojo extends AbstractMojo {
     //
     File localRepository = new File(settings.getLocalRepository());
     String artifactPath = String.format("io/takari/maven-wrapper/%s/maven-wrapper-%s.tar.gz", version, version);
-    String wrapperUrl = String.format("https://repo1.maven.org/maven2/%s", artifactPath);
+    String mirrorUrl = getMirrorAllOrCentralURL();
+    String wrapperUrl = String.format("%s/%s", mirrorUrl, artifactPath);
     File destination = new File(localRepository, artifactPath);
 
     getLog().debug("Attempting to download from and write to:");
@@ -64,10 +66,13 @@ public class WrapperMojo extends AbstractMojo {
     Downloader downloader = new DefaultDownloader("mvnw", version);
     try {
       downloader.download(new URI(wrapperUrl), destination);
-      UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
+
       Path rootDirectory = Paths.get(session.getExecutionRootDirectory());
+
+      UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
       unarchiver.unarchive(destination, rootDirectory.toFile());
-      overwriteDistributionUrl(rootDirectory, getDistributionUrl());
+
+      overwriteDistributionUrl(rootDirectory, getDistributionUrl(mirrorUrl));
 
       getLog().info("");
       getLog().info("The Maven Wrapper version " + version + " has been successfully setup for your project.");
@@ -88,9 +93,9 @@ public class WrapperMojo extends AbstractMojo {
     }
   }
 
-  protected String getDistributionUrl() {
+  protected String getDistributionUrl(String mirrorUrl) {
     if (isNullOrEmpty(distributionUrl) && !isNullOrEmpty(maven)) {
-      distributionUrl = String.format("https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", maven, maven);
+      distributionUrl = String.format("%s/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", mirrorUrl, maven, maven);
     }
     return distributionUrl;
   }
@@ -99,4 +104,17 @@ public class WrapperMojo extends AbstractMojo {
     return value == null || value.isEmpty();
   }
 
+  private String getMirrorAllOrCentralURL() {
+    String answer = "https://repo1.maven.org/maven2";
+    if (settings.getMirrors() != null && settings.getMirrors().size() > 0) {
+      for (Mirror current : settings.getMirrors()) {
+        if ("*".equals(current.getMirrorOf())) {
+          answer = current.getUrl();
+          break;
+        }
+      }
+    }
+
+    return answer;
+  }
 }
