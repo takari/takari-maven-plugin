@@ -18,6 +18,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.settings.Settings;
 import org.apache.maven.wrapper.DefaultDownloader;
 import org.apache.maven.wrapper.Downloader;
 
@@ -41,6 +42,9 @@ public class WrapperMojo extends AbstractMojo {
   @Parameter(property = "distributionUrl")
   private String distributionUrl;
 
+  @Parameter( defaultValue = "${settings}", readonly = true )
+  private Settings settings;
+
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     //
@@ -48,10 +52,15 @@ public class WrapperMojo extends AbstractMojo {
     // Unpack it in the current working project
     // Possibly interpolate the latest version of Maven in the wrapper properties
     //
-    File localRepository = new File(System.getProperty("user.home"), ".m2/repository");
+    File localRepository = new File(settings.getLocalRepository());
     String artifactPath = String.format("io/takari/maven-wrapper/%s/maven-wrapper-%s.tar.gz", version, version);
     String wrapperUrl = String.format("https://repo1.maven.org/maven2/%s", artifactPath);
     File destination = new File(localRepository, artifactPath);
+
+    getLog().debug("Attempting to download from and write to:");
+    getLog().debug("  WrapperUrl: " + wrapperUrl);
+    getLog().debug("  Destination: " + destination.getAbsolutePath());
+
     Downloader downloader = new DefaultDownloader("mvnw", version);
     try {
       downloader.download(new URI(wrapperUrl), destination);
@@ -59,6 +68,7 @@ public class WrapperMojo extends AbstractMojo {
       Path rootDirectory = Paths.get(session.getExecutionRootDirectory());
       unarchiver.unarchive(destination, rootDirectory.toFile());
       overwriteDistributionUrl(rootDirectory, getDistributionUrl());
+
       getLog().info("");
       getLog().info("The Maven Wrapper version " + version + " has been successfully setup for your project.");
       getLog().info("Using Apache Maven " + maven);
