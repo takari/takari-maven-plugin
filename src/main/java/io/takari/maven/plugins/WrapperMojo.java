@@ -41,6 +41,9 @@ public class WrapperMojo extends AbstractMojo {
   @Parameter(property = "distributionUrl")
   private String distributionUrl;
 
+  @Parameter(defaultValue = "https://repo.maven.apache.org/maven2" , property = "mavenRepoUrl")
+  private String mavenRepoUrl ;
+
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     //
@@ -50,7 +53,8 @@ public class WrapperMojo extends AbstractMojo {
     //
     File localRepository = new File(System.getProperty("user.home"), ".m2/repository");
     String artifactPath = String.format("io/takari/maven-wrapper/%s/maven-wrapper-%s.tar.gz", version, version);
-    String wrapperUrl = String.format("https://repo1.maven.org/maven2/%s", artifactPath);
+    String wrapperUrl = String.format("%s/%s", mavenRepoUrl, artifactPath);
+    getLog().debug("fetching wrapper from " + wrapperUrl);
     File destination = new File(localRepository, artifactPath);
     Downloader downloader = new DefaultDownloader("mvnw", version);
     try {
@@ -80,7 +84,7 @@ public class WrapperMojo extends AbstractMojo {
 
   protected String getDistributionUrl() {
     if (isNullOrEmpty(distributionUrl) && !isNullOrEmpty(maven)) {
-      distributionUrl = String.format("https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", maven, maven);
+      distributionUrl = String.format("%s/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", mavenRepoUrl, maven, maven);
     }
     return distributionUrl;
   }
