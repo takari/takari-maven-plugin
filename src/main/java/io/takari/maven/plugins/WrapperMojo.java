@@ -23,6 +23,8 @@ import org.apache.maven.wrapper.Downloader;
 
 import io.tesla.proviso.archive.UnArchiver;
 
+import static com.google.common.base.Strings.*;
+
 /**
  * @author Jason van Zyl
  */
@@ -84,9 +86,4 @@ public class WrapperMojo extends AbstractMojo {
     }
     return distributionUrl;
   }
-
-  private static boolean isNullOrEmpty(String value) {
-    return value == null || value.isEmpty();
-  }
-
 }

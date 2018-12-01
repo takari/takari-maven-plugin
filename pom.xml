@@ -22,7 +22,12 @@
      <!--  also update version property default value in WrapperMojo -->
       <version>0.4.2</version>
     </dependency>
-    <dependency>
+	<dependency>
+    	<groupId>com.google.guava</groupId>
+    	<artifactId>guava</artifactId>
+    	<version>14.0.1</version>
+	</dependency>
+	<dependency>
       <groupId>io.takari</groupId>
       <artifactId>takari-archiver</artifactId>
       <version>0.1.9</version>
