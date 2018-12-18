@@ -24,7 +24,10 @@ import org.apache.maven.wrapper.Downloader;
 import io.tesla.proviso.archive.UnArchiver;
 
 /**
+ * WrapperMojo install the Maven Wrapper files in the current project.
+ *
  * @author Jason van Zyl
+ * @author Manfred Moser
  */
 @Mojo(name = "wrapper", requiresProject = false, aggregator = true)
 public class WrapperMojo extends AbstractMojo {
@@ -32,10 +35,10 @@ public class WrapperMojo extends AbstractMojo {
   @Parameter(defaultValue = "${session}", readonly = true)
   private MavenSession session;
 
-  @Parameter(defaultValue = "0.4.2", property = "version")
+  @Parameter(defaultValue = "0.4.3-SNAPSHOT", property = "version")
   private String version;
 
-  @Parameter(defaultValue = "3.5.4", property = "maven")
+  @Parameter(defaultValue = "3.6.0", property = "maven")
   private String maven;
 
   @Parameter(property = "distributionUrl")
