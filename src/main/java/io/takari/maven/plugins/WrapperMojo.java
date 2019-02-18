@@ -84,7 +84,7 @@ public class WrapperMojo extends AbstractMojo {
       UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
       unarchiver.unarchive(destination, rootDirectory.toFile());
 
-      overwriteDistributionUrl(rootDirectory, getDistributionUrl(mirrorUrl));
+      //overwriteDistributionUrl(rootDirectory, getDistributionUrl(mirrorUrl));
       overwriteMavenWrapperProperties(rootDirectory);
 
 
@@ -100,9 +100,9 @@ public class WrapperMojo extends AbstractMojo {
   private void overwriteMavenWrapperProperties(Path rootDirectory) throws IOException {
     List<String> props = new ArrayList<>();
 
-    // Distrution URL could be altered by downloadBaseUrl, maven and distributionUrl
+    // Distrution URL could be altered by user properties downloadBaseUrl, maven and distributionUrl
     if (!isNullOrEmpty(downloadBaseUrl) || !isNullOrEmpty(distributionUrl) || !DEFAULT_MAVEN_VER.equals(maven)) {
-      props.add("distributionUrl=" + getDistributionUrl());
+      props.add("distributionUrl=" + getDistributionUrl(getMirrorAllOrCentralURL()));
     }
     // Wrapper JAR URL could be overridden by downloadBaseUrl
     if (!isNullOrEmpty(downloadBaseUrl)) {
@@ -121,10 +121,6 @@ public class WrapperMojo extends AbstractMojo {
     }
   }
 
-//  protected String getDistributionUrl(String mirrorUrl) {
-//    if (isNullOrEmpty(distributionUrl) && !isNullOrEmpty(maven)) {
-//      distributionUrl = String.format("%s/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", mirrorUrl, maven, maven);
-
   private String getDownloadBaseUrl() {
     // if overridden
     if (!isNullOrEmpty(downloadBaseUrl)) {
@@ -133,9 +129,12 @@ public class WrapperMojo extends AbstractMojo {
     return DEFAULT_DOWNLOAD_BASE_URL;
   }
 
-  protected String getDistributionUrl() {
-    // if overridden
-    if (!isNullOrEmpty(distributionUrl)) {
+
+  protected String getDistributionUrl(String mirrorUrl) {
+    if (isNullOrEmpty(distributionUrl) && !isNullOrEmpty(maven) && !isNullOrEmpty(mirrorUrl)) {
+      distributionUrl = String.format("%s/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", mirrorUrl, maven, maven);
+    } 
+    else if (!isNullOrEmpty(distributionUrl)) {
       return distributionUrl;
     }
     return String.format("%s/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", getDownloadBaseUrl(), maven, maven);
@@ -146,7 +145,7 @@ public class WrapperMojo extends AbstractMojo {
   }
 
   private String getMirrorAllOrCentralURL() {
-    String answer = "https://repo1.maven.org/maven2";
+    String answer = DEFAULT_DOWNLOAD_BASE_URL;
     if (settings.getMirrors() != null && settings.getMirrors().size() > 0) {
       for (Mirror current : settings.getMirrors()) {
         if ("*".equals(current.getMirrorOf())) {
