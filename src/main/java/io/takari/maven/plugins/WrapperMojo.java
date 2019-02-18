@@ -66,13 +66,17 @@ public class WrapperMojo extends AbstractMojo {
     //
     File localRepository = new File(settings.getLocalRepository());
     String artifactPath = String.format("io/takari/maven-wrapper/%s/maven-wrapper-%s.tar.gz", version, version);
-    String mirrorUrl = getMirrorAllOrCentralURL();
-    String wrapperUrl = String.format("%s/%s", mirrorUrl, artifactPath);
+    String distroPath = String.format("org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", maven, maven); 
+
+    String repoUrl = getMirrorAllOrCentralURL();
+
+    String wrapperUrl = String.format("%s/%s", repoUrl, artifactPath);
+    String distroUrl = String.format("%s/%s", repoUrl, distroPath);
     File destination = new File(localRepository, artifactPath);
 
-    getLog().debug("Attempting to download from and write to:");
-    getLog().debug("  WrapperUrl: " + wrapperUrl);
-    getLog().debug("  Destination: " + destination.getAbsolutePath());
+    getLog().debug("Attempting to");
+    getLog().debug(" Download maven-wrapper jar from " + wrapperUrl);
+    getLog().debug(" Write maven-wrapper jar to " + destination.getAbsolutePath());
 
     Downloader downloader = new DefaultDownloader("mvnw", version);
     try {
@@ -83,35 +87,25 @@ public class WrapperMojo extends AbstractMojo {
 
       UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
       unarchiver.unarchive(destination, rootDirectory.toFile());
+      getLog().debug("Installed maven-wrapper jar successfully.");
 
-      //overwriteDistributionUrl(rootDirectory, getDistributionUrl(mirrorUrl));
-      overwriteMavenWrapperProperties(rootDirectory);
-
+      overwriteMavenWrapperProperties(rootDirectory, wrapperUrl, distroUrl);
 
       getLog().info("");
       getLog().info("The Maven Wrapper version " + version + " has been successfully setup for your project.");
       getLog().info("Using Apache Maven " + maven);
+      getLog().info("Repo URL in properties file set to " + repoUrl);
       getLog().info("");
     } catch (Exception e) {
       throw new MojoExecutionException("Error installing the maven-wrapper archive.", e);
     }
   }
 
-  private void overwriteMavenWrapperProperties(Path rootDirectory) throws IOException {
+  private void overwriteMavenWrapperProperties(Path rootDirectory, String wrapperUrl, String distroUrl) 
+      throws IOException {
     List<String> props = new ArrayList<>();
-
-    // Distrution URL could be altered by user properties downloadBaseUrl, maven and distributionUrl
-    if (!isNullOrEmpty(downloadBaseUrl) || !isNullOrEmpty(distributionUrl) || !DEFAULT_MAVEN_VER.equals(maven)) {
-      props.add("distributionUrl=" + getDistributionUrl(getMirrorAllOrCentralURL()));
-    }
-    // Wrapper JAR URL could be overridden by downloadBaseUrl
-    if (!isNullOrEmpty(downloadBaseUrl)) {
-      String wrapperJarUrl = String.format("%s/io/takari/maven-wrapper/%s/maven-wrapper-%s.jar", 
-                                                getDownloadBaseUrl(),
-                                                version, 
-                                                version);
-      props.add("wrapperUrl=" + wrapperJarUrl);
-    }
+    props.add("distributionUrl=" + distroUrl);
+    props.add("wrapperUrl=" + wrapperUrl);
 
     if (!props.isEmpty()) {
       Path wrapperProperties = rootDirectory.resolve(Paths.get(".mvn", "wrapper", "maven-wrapper.properties"));
@@ -121,32 +115,18 @@ public class WrapperMojo extends AbstractMojo {
     }
   }
 
-  private String getDownloadBaseUrl() {
-    // if overridden
-    if (!isNullOrEmpty(downloadBaseUrl)) {
-      return downloadBaseUrl;
-    }
-    return DEFAULT_DOWNLOAD_BASE_URL;
-  }
-
-
-  protected String getDistributionUrl(String mirrorUrl) {
-    if (isNullOrEmpty(distributionUrl) && !isNullOrEmpty(maven) && !isNullOrEmpty(mirrorUrl)) {
-      distributionUrl = String.format("%s/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", mirrorUrl, maven, maven);
-    } 
-    else if (!isNullOrEmpty(distributionUrl)) {
-      return distributionUrl;
-    }
-    return String.format("%s/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", getDownloadBaseUrl(), maven, maven);
-  }
-
   private static boolean isNullOrEmpty(String value) {
     return value == null || value.isEmpty();
   }
 
   private String getMirrorAllOrCentralURL() {
+    // default
     String answer = DEFAULT_DOWNLOAD_BASE_URL;
-    if (settings.getMirrors() != null && settings.getMirrors().size() > 0) {
+    // user property has precedence
+    if (!isNullOrEmpty(downloadBaseUrl)) {
+      answer = downloadBaseUrl;
+    } // otherwise mirror from settings
+    else if (settings.getMirrors() != null && settings.getMirrors().size() > 0) {
       for (Mirror current : settings.getMirrors()) {
         if ("*".equals(current.getMirrorOf())) {
           answer = current.getUrl();
@@ -154,7 +134,6 @@ public class WrapperMojo extends AbstractMojo {
         }
       }
     }
-
     return answer;
   }
 }
