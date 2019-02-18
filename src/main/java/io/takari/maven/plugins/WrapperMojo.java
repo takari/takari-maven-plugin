@@ -59,11 +59,6 @@ public class WrapperMojo extends AbstractMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-    //
-    // Fetch the latest wrapper archive
-    // Unpack it in the current working project
-    // Possibly interpolate the latest version of Maven in the wrapper properties
-    //
     File localRepository = new File(settings.getLocalRepository());
     String artifactPath = String.format("io/takari/maven-wrapper/%s/maven-wrapper-%s.tar.gz", version, version);
     String distroPath = String.format("org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", maven, maven); 
@@ -75,65 +70,75 @@ public class WrapperMojo extends AbstractMojo {
     File destination = new File(localRepository, artifactPath);
 
     getLog().debug("Attempting to");
-    getLog().debug(" Download maven-wrapper jar from " + wrapperUrl);
-    getLog().debug(" Write maven-wrapper jar to " + destination.getAbsolutePath());
+    getLog().debug(" Download maven-wrapper from " + wrapperUrl);
+    getLog().debug(" Write maven-wrapper to " + destination.getAbsolutePath());
 
     Downloader downloader = new DefaultDownloader("mvnw", version);
     try {
-      getLog().info("Downloading wrapper from " + wrapperUrl);
+      getLog().debug("Downloading maven-wrapper from " + wrapperUrl);
       downloader.download(new URI(wrapperUrl), destination);
 
       Path rootDirectory = Paths.get(session.getExecutionRootDirectory());
 
       UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
       unarchiver.unarchive(destination, rootDirectory.toFile());
-      getLog().debug("Installed maven-wrapper jar successfully.");
+      getLog().debug("Installed maven-wrapper successfully.");
 
-      writeMavenWrapperProperties(rootDirectory, wrapperUrl, distroUrl);
+      updateMavenWrapperProperties(rootDirectory, wrapperUrl, distroUrl);
 
       getLog().info("");
-      getLog().info("The Maven Wrapper version " + version + " has been successfully setup for your project.");
-      getLog().info("Using Apache Maven " + maven);
-      getLog().info("Repo URL in properties file set to " + repoUrl);
+      getLog().info("Maven Wrapper version " + version + " has been successfully set up for your project.");
+      getLog().info("Using Apache Maven: " + maven);
+      getLog().info("Repo URL in properties file: " + repoUrl);
       getLog().info("");
     } catch (Exception e) {
-      throw new MojoExecutionException("Error installing the maven-wrapper archive.", e);
+      throw new MojoExecutionException("Error installing the Maven Wrapper.", e);
     }
   }
 
-  private void writeMavenWrapperProperties(Path rootDirectory, String wrapperUrl, String distroUrl)
+  /**
+   * Update the extracted properties file to used parameters.
+   */
+  private void updateMavenWrapperProperties(Path rootDirectory, String wrapperUrl, String distroUrl)
       throws IOException {
     List<String> props = new ArrayList<>();
     props.add("distributionUrl=" + distroUrl);
     props.add("wrapperUrl=" + wrapperUrl);
 
-    if (!props.isEmpty()) {
-      Path wrapperProperties = rootDirectory.resolve(Paths.get(".mvn", "wrapper", "maven-wrapper.properties"));
-      if (Files.isWritable(wrapperProperties)) {
-        Files.write(wrapperProperties, props, Charset.forName("UTF-8"));
-      }
+    Path wrapperProperties = rootDirectory.resolve(Paths.get(".mvn", "wrapper", "maven-wrapper.properties"));
+    if (Files.isWritable(wrapperProperties)) {
+      Files.write(wrapperProperties, props, Charset.forName("UTF-8"));
+      getLog().debug("Properties file updated, located at " + wrapperProperties);
+    }
+    else
+    {
+      getLog().debug("Left existing properties file untouched. " + wrapperProperties);
     }
   }
 
-  private static boolean isNullOrEmpty(String value) {
-    return value == null || value.isEmpty();
-  }
-
+  /**
+   * Determine the repository URL to download wrapper and maven from.
+   */
   private String getRepoUrl() {
     // default
-    String answer = DEFAULT_DOWNLOAD_BASE_URL;
+    String result = DEFAULT_DOWNLOAD_BASE_URL;
     // user property has precedence
     if (!isNullOrEmpty(downloadBaseUrl)) {
-      answer = downloadBaseUrl;
+      result = downloadBaseUrl;
     } // otherwise mirror from settings
     else if (settings.getMirrors() != null && settings.getMirrors().size() > 0) {
       for (Mirror current : settings.getMirrors()) {
         if ("*".equals(current.getMirrorOf())) {
-          answer = current.getUrl();
+          result = current.getUrl();
           break;
         }
       }
     }
-    return answer;
+    getLog().debug("Determined repo URL to use as " + result);
+    return result;
+  }
+
+  private static boolean isNullOrEmpty(String value) {
+    return value == null || value.isEmpty();
   }
 }
