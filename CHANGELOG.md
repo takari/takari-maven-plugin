@@ -17,7 +17,9 @@ useful information related to the wrapper goal of this plugin.
     Adrian Shum https://github.com/adrianshum,
 - Support for mirror URL usage from settings.xml
   - see https://github.com/takari/takari-maven-plugin/pull/12
-  - contributed by Gareth Healy https://github.com/garethahealy
+  - contributed by Gareth Healy https://github.com/garethahealy and Manfred Moser - http://www.simpligility.com
+- Wrapper mojo codebase and logging cleanup
+  - contributed by Manfred Moser - http://www.simpligility.com
 
 Release performed by Manfred Moser - http://www.simpligility.com
 

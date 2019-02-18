@@ -75,14 +75,13 @@ public class WrapperMojo extends AbstractMojo {
 
     Downloader downloader = new DefaultDownloader("mvnw", version);
     try {
-      getLog().debug("Downloading Maven Wrapper from " + wrapperUrl);
       downloader.download(new URI(wrapperUrl), destination);
+      getLog().debug("Downloaded maven-wrapper from " + wrapperUrl);
 
       Path rootDirectory = Paths.get(session.getExecutionRootDirectory());
-
       UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
       unarchiver.unarchive(destination, rootDirectory.toFile());
-      getLog().debug("Installed maven-wrapper successfully.");
+      getLog().debug("Extracted maven-wrapper successfully.");
 
       updateMavenWrapperProperties(rootDirectory, wrapperUrl, distroUrl);
 
