@@ -20,6 +20,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.settings.Mirror;
+import org.apache.maven.settings.Settings;
 import org.apache.maven.wrapper.DefaultDownloader;
 import org.apache.maven.wrapper.Downloader;
 
@@ -52,6 +54,9 @@ public class WrapperMojo extends AbstractMojo {
   @Parameter(property = "distributionUrl")
   private String distributionUrl;
 
+  @Parameter( defaultValue = "${settings}", readonly = true )
+  private Settings settings;
+
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     //
@@ -59,19 +64,29 @@ public class WrapperMojo extends AbstractMojo {
     // Unpack it in the current working project
     // Possibly interpolate the latest version of Maven in the wrapper properties
     //
-    File localRepository = new File(System.getProperty("user.home"), ".m2/repository");
+    File localRepository = new File(settings.getLocalRepository());
     String artifactPath = String.format("io/takari/maven-wrapper/%s/maven-wrapper-%s.tar.gz", version, version);
-    String wrapperUrl = getDownloadBaseUrl() + "/" + artifactPath;
+    String mirrorUrl = getMirrorAllOrCentralURL();
+    String wrapperUrl = String.format("%s/%s", mirrorUrl, artifactPath);
     File destination = new File(localRepository, artifactPath);
+
+    getLog().debug("Attempting to download from and write to:");
+    getLog().debug("  WrapperUrl: " + wrapperUrl);
+    getLog().debug("  Destination: " + destination.getAbsolutePath());
 
     Downloader downloader = new DefaultDownloader("mvnw", version);
     try {
       getLog().info("Downloading wrapper from " + wrapperUrl);
       downloader.download(new URI(wrapperUrl), destination);
-      UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
+
       Path rootDirectory = Paths.get(session.getExecutionRootDirectory());
+
+      UnArchiver unarchiver = UnArchiver.builder().useRoot(false).build();
       unarchiver.unarchive(destination, rootDirectory.toFile());
+
+      overwriteDistributionUrl(rootDirectory, getDistributionUrl(mirrorUrl));
       overwriteMavenWrapperProperties(rootDirectory);
+
 
       getLog().info("");
       getLog().info("The Maven Wrapper version " + version + " has been successfully setup for your project.");
@@ -106,6 +121,10 @@ public class WrapperMojo extends AbstractMojo {
     }
   }
 
+//  protected String getDistributionUrl(String mirrorUrl) {
+//    if (isNullOrEmpty(distributionUrl) && !isNullOrEmpty(maven)) {
+//      distributionUrl = String.format("%s/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", mirrorUrl, maven, maven);
+
   private String getDownloadBaseUrl() {
     // if overridden
     if (!isNullOrEmpty(downloadBaseUrl)) {
@@ -126,4 +145,17 @@ public class WrapperMojo extends AbstractMojo {
     return value == null || value.isEmpty();
   }
 
+  private String getMirrorAllOrCentralURL() {
+    String answer = "https://repo1.maven.org/maven2";
+    if (settings.getMirrors() != null && settings.getMirrors().size() > 0) {
+      for (Mirror current : settings.getMirrors()) {
+        if ("*".equals(current.getMirrorOf())) {
+          answer = current.getUrl();
+          break;
+        }
+      }
+    }
+
+    return answer;
+  }
 }
