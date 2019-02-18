@@ -68,7 +68,7 @@ public class WrapperMojo extends AbstractMojo {
     String artifactPath = String.format("io/takari/maven-wrapper/%s/maven-wrapper-%s.tar.gz", version, version);
     String distroPath = String.format("org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip", maven, maven); 
 
-    String repoUrl = getMirrorAllOrCentralURL();
+    String repoUrl = getRepoUrl();
 
     String wrapperUrl = String.format("%s/%s", repoUrl, artifactPath);
     String distroUrl = String.format("%s/%s", repoUrl, distroPath);
@@ -89,7 +89,7 @@ public class WrapperMojo extends AbstractMojo {
       unarchiver.unarchive(destination, rootDirectory.toFile());
       getLog().debug("Installed maven-wrapper jar successfully.");
 
-      overwriteMavenWrapperProperties(rootDirectory, wrapperUrl, distroUrl);
+      writeMavenWrapperProperties(rootDirectory, wrapperUrl, distroUrl);
 
       getLog().info("");
       getLog().info("The Maven Wrapper version " + version + " has been successfully setup for your project.");
@@ -101,7 +101,7 @@ public class WrapperMojo extends AbstractMojo {
     }
   }
 
-  private void overwriteMavenWrapperProperties(Path rootDirectory, String wrapperUrl, String distroUrl) 
+  private void writeMavenWrapperProperties(Path rootDirectory, String wrapperUrl, String distroUrl)
       throws IOException {
     List<String> props = new ArrayList<>();
     props.add("distributionUrl=" + distroUrl);
@@ -119,7 +119,7 @@ public class WrapperMojo extends AbstractMojo {
     return value == null || value.isEmpty();
   }
 
-  private String getMirrorAllOrCentralURL() {
+  private String getRepoUrl() {
     // default
     String answer = DEFAULT_DOWNLOAD_BASE_URL;
     // user property has precedence
