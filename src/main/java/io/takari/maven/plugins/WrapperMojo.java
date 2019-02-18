@@ -33,7 +33,7 @@ import io.tesla.proviso.archive.UnArchiver;
  */
 @Mojo(name = "wrapper", requiresProject = false, aggregator = true)
 public class WrapperMojo extends AbstractMojo {
-  private static final String DEFAULT_DOWNLOAD_BASE_URL="https://repo1.maven.org/maven2";
+  private static final String DEFAULT_DOWNLOAD_BASE_URL="https://repo.maven.apache.org/maven2";
   private static final String DEFAULT_MAVEN_VER = "3.6.0";
 
   @Parameter(defaultValue = "${session}", readonly = true)
