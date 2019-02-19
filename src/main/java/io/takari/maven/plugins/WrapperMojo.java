@@ -124,7 +124,15 @@ public class WrapperMojo extends AbstractMojo {
     // user property has precedence
     if (!isNullOrEmpty(downloadBaseUrl)) {
       result = downloadBaseUrl;
-    } // otherwise mirror from settings
+      getLog().debug("Setting repo URL from property.");
+    }
+    // adpapt to also support MVNW_BASEURL as supported by mvnw scripts from maven-wrapper
+    String mvnwRepoUrl = System.getenv("MVNW_REPOURL");
+    if (!isNullOrEmpty(mvnwRepoUrl)) {
+      result = mvnwRepoUrl;
+      getLog().debug("Setting repo URL from environment variable.");
+    }
+    // otherwise mirror from settings
     else if (settings.getMirrors() != null && settings.getMirrors().size() > 0) {
       for (Mirror current : settings.getMirrors()) {
         if ("*".equals(current.getMirrorOf())) {
@@ -132,6 +140,7 @@ public class WrapperMojo extends AbstractMojo {
           break;
         }
       }
+      getLog().debug("Setting repo URL from mirro in settings file.");
     }
     getLog().debug("Determined repo URL to use as " + result);
     return result;
