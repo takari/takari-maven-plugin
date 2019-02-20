@@ -41,7 +41,7 @@ public class WrapperMojo extends AbstractMojo {
   @Parameter(defaultValue = "${session}", readonly = true)
   private MavenSession session;
 
-  @Parameter(defaultValue = "0.5.0", property = "version")
+  @Parameter(defaultValue = "0.5.1", property = "version")
   private String version;
 
   @Parameter(defaultValue = DEFAULT_MAVEN_VER, property = "maven")

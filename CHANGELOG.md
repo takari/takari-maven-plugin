@@ -6,7 +6,13 @@ changes. The following provides most information at an easier glance.
 In addition the [maven-wrapper changelog](https://github.com/takari/maven-wrapper/blob/master/CHANGELOG.md) contains
 useful information related to the wrapper goal of this plugin.
 
-## Version 0.7.0 - to be done
+## Version 0.7.0 - 2019-02-19
+
+- Upgrade maven-wrapper:0.5.1 and hence the mvnw.cmd fix from that release
+
+Release performed by Manfred Moser - http://www.simpligility.com
+
+## Version 0.7.0 - 2019-02-18
 
 - Upgrade maven-wrapper:0.5.0 and hence the improvements from that release
 - Support for alternate base URL for binaries (e.g. repo manager)
