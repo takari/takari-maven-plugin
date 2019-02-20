@@ -6,7 +6,14 @@ changes. The following provides most information at an easier glance.
 In addition the [maven-wrapper changelog](https://github.com/takari/maven-wrapper/blob/master/CHANGELOG.md) contains
 useful information related to the wrapper goal of this plugin.
 
-## Version 0.7.0 - 2019-02-19
+
+## Version 0.7.2 - 2019-02-20
+
+- Upgrade maven-wrapper:0.5.2 and hence the WTLS1.2 Windows fix from that release
+
+Release performed by Manfred Moser - http://www.simpligility.com
+
+## Version 0.7.1 - 2019-02-19
 
 - Upgrade maven-wrapper:0.5.1 and hence the mvnw.cmd fix from that release
 
