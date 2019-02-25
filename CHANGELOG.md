@@ -6,6 +6,11 @@ changes. The following provides most information at an easier glance.
 In addition the [maven-wrapper changelog](https://github.com/takari/maven-wrapper/blob/master/CHANGELOG.md) contains
 useful information related to the wrapper goal of this plugin.
 
+## Version 0.7.3 - 2019-02-25
+
+- Upgrade maven-wrapper:0.5.3 and hence the MVNW_REPOURL fix for mvnw
+
+Release performed by Manfred Moser - http://www.simpligility.com
 
 ## Version 0.7.2 - 2019-02-20
 
