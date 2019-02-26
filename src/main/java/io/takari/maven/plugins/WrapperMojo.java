@@ -100,7 +100,7 @@ public class WrapperMojo extends AbstractMojo {
    */
   private void updateMavenWrapperProperties(Path rootDirectory, String wrapperUrl, String distroUrl)
       throws IOException {
-	String wrapperJarUrl = wrapperUrl.replace("tar.gz", "jar");
+    String wrapperJarUrl = wrapperUrl.replace("tar.gz", "jar");
     List<String> props = new ArrayList<>();
     props.add("distributionUrl=" + distroUrl);
     props.add("wrapperUrl=" + wrapperJarUrl);
