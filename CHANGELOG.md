@@ -6,6 +6,15 @@ changes. The following provides most information at an easier glance.
 In addition the [maven-wrapper changelog](https://github.com/takari/maven-wrapper/blob/master/CHANGELOG.md) contains
 useful information related to the wrapper goal of this plugin.
 
+## Version 0.7.4 - 2019-2-25
+
+- Use jar path for wrapper in properties file
+  - fixes https://github.com/takari/takari-maven-plugin/issues/19
+  - see https://github.com/takari/takari-maven-plugin/pull/20
+  - contributed by Manfred Moser http://www.simpligility.com
+  
+Release performed by Manfred Moser - http://www.simpligility.com
+
 ## Version 0.7.3 - 2019-02-25
 
 - Upgrade maven-wrapper:0.5.3 and hence the MVNW_REPOURL fix for mvnw
