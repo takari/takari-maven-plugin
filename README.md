@@ -4,21 +4,21 @@
 
 ```
 cd yourmavenproject
-mvn -N io.takari:maven:wrapper
+mvn -N io.takari:maven:0.7.4:wrapper
 ```
 
 You can set a specific Maven release (but not SNAPSHOT) by adding a `maven` parameter :
 
 ```
 cd yourmavenproject
-mvn -N io.takari:maven:wrapper -Dmaven=3.5.4
+mvn -N io.takari:maven:0.7.4:wrapper -Dmaven=3.5.4
 ```
 
 Alternatively, you can set a specific download url (which could point to a SNAPSHOT version of Maven) by using the `distributionUrl` parameter :
 
 ```
 cd yourmavenproject
-mvn -N io.takari:maven:wrapper -DdistributionUrl=http://server/path/to/maven/distro.zip
+mvn -N io.takari:maven:0.7.4:wrapper -DdistributionUrl=http://server/path/to/maven/distro.zip
 ```
 
 or you can set the URL to a Maven repository manager with the `MVNW_REPOURL`
@@ -45,7 +45,7 @@ Typically, use the scripts and binaries as updated and only adjust config files,
 More details about the Maven Wrapper including
 
 - URL config changes,
-- verbose mode with `MVNw_VERBOSE`,
+- verbose mode with `MVNW_VERBOSE`,
 - no binary usage mode and 
 - parameters `MVNW_USERNAME`, `MVNW_PASSWORD` and `MVNW_REPOURL`
 
