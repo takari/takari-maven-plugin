@@ -20,7 +20,7 @@
       <groupId>io.takari</groupId>
       <artifactId>maven-wrapper</artifactId>
      <!--  also update version property default value in WrapperMojo -->
-      <version>0.5.3</version>
+      <version>0.5.4</version>
     </dependency>
     <dependency>
       <groupId>io.takari</groupId>
