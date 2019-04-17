@@ -6,6 +6,13 @@ changes. The following provides most information at an easier glance.
 In addition the [maven-wrapper changelog](https://github.com/takari/maven-wrapper/blob/master/CHANGELOG.md) contains
 useful information related to the wrapper goal of this plugin.
 
+## Version 0.7.6 - 2019-04-16
+
+- Upgrade maven-wrapper:0.5.5 and hence related fixes
+  - e.g. Maven 3.6.1 as default
+
+Release performed by Manfred Moser - http://www.simpligility.com
+
 ## Version 0.7.5 - 2019-03-26
 
 - Upgrade maven-wrapper:0.5.4 and hence related fixes
