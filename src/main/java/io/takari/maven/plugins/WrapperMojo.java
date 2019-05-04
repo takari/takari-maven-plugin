@@ -127,7 +127,7 @@ public class WrapperMojo extends AbstractMojo {
       result = downloadBaseUrl;
       getLog().debug("Setting repo URL from property.");
     }
-    // adpapt to also support MVNW_REPOURL as supported by mvnw scripts from maven-wrapper
+    // adapt to also support MVNW_REPOURL as supported by mvnw scripts from maven-wrapper
     String mvnwRepoUrl = System.getenv("MVNW_REPOURL");
     if (!isNullOrEmpty(mvnwRepoUrl)) {
       result = mvnwRepoUrl;
@@ -141,7 +141,7 @@ public class WrapperMojo extends AbstractMojo {
           break;
         }
       }
-      getLog().debug("Setting repo URL from mirro in settings file.");
+      getLog().debug("Setting repo URL from mirror in settings file.");
     }
     getLog().debug("Determined repo URL to use as " + result);
     return result;
