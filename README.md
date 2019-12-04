@@ -4,7 +4,7 @@
 
 ```bash
 cd yourmavenproject
-mvn -N io.takari:maven:0.7.6:wrapper
+mvn -N io.takari:maven:0.7.7:wrapper
 ```
 
 You can set a specific Maven release (but not SNAPSHOT) by adding a `maven`
@@ -12,7 +12,7 @@ parameter :
 
 ```bash
 cd yourmavenproject
-mvn -N io.takari:maven:0.7.6:wrapper -Dmaven=3.5.4
+mvn -N io.takari:maven:0.7.7:wrapper -Dmaven=3.5.4
 ```
 
 Alternatively, you can set a specific download url (which could point to a
@@ -20,7 +20,7 @@ SNAPSHOT version of Maven) by using the `distributionUrl` parameter :
 
 ```bash
 cd yourmavenproject
-mvn -N io.takari:maven:0.7.6:wrapper -DdistributionUrl=http://server/path/to/maven/distro.zip
+mvn -N io.takari:maven:0.7.7:wrapper -DdistributionUrl=http://server/path/to/maven/distro.zip
 ```
 
 or you can set the URL to a Maven repository manager with the `MVNW_REPOURL`

@@ -6,6 +6,10 @@ changes. The following provides most information at an easier glance.
 In addition the [maven-wrapper changelog](https://github.com/takari/maven-wrapper/blob/master/CHANGELOG.md) contains
 useful information related to the wrapper goal of this plugin.
 
+## Version 0.7.7 - 2019-12-04
+
+- Upgrade maven-wrapper:0.5.6 and hence Maven 3.6.3 as default
+
 ## Version 0.7.6 - 2019-04-16
 
 - Upgrade maven-wrapper:0.5.5 and hence related fixes
