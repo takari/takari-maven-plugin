@@ -1,5 +1,11 @@
 # Takari Maven Plugin
 
+## Project Frozen Notice
+
+This project is essentially in the process of migrating to the upstream Apache
+Maven project. Please find more details with the
+[maven-wrapper project](https://github.com/takari/maven-wrapper)
+
 ## Install the Maven Wrapper in your Maven Project
 
 ```bash
